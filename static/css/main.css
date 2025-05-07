@@ -1,0 +1,202 @@
+/* General Styles */
+body {
+          font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+          background-color: #f4f6f8; /* Light grayish background */
+          color: #2c3e50; /* Deep elegant dark blue-gray text */
+          margin: 0;
+          padding: 0;
+          display: flex;
+          flex-direction: column;
+          min-height: 100vh;
+      }
+      
+      .container-main {
+          margin-top: 30px;
+          flex: 1;
+      }
+      
+      /* Navbar Customization */
+      .navbar-custom {
+          background-color: #1d3557; /* Deep navy blue */
+          border-radius: 0;
+      }
+      
+      .navbar-custom .navbar-brand,
+      .navbar-custom .navbar-nav .nav-link {
+          color: #f1f1f1 !important; /* Light text for contrast */
+      }
+      
+      .navbar-custom .navbar-toggler-icon {
+          background-color: #f1f1f1;
+      }
+      
+      .navbar-custom .navbar-nav .nav-item .nav-link:hover {
+          background-color: rgba(241, 241, 241, 0.15); /* Subtle hover effect */
+      }
+      
+      /* Footer Customization */
+      .footer-custom {
+          background-color: #1d3557;
+          color: #f1f1f1;
+          padding: 30px 0;
+          text-align: center;
+      }
+      
+      .footer-custom h5 {
+          color: #f1f1f1;
+          font-weight: bold;
+          margin-bottom: 15px;
+      }
+      
+      .footer-custom a {
+          color: #a8dadc; /* Soft muted teal */
+          text-decoration: none;
+      }
+      
+      .footer-custom a:hover {
+          color: #f1f1f1;
+      }
+      
+      .footer-custom .social-icons a {
+          font-size: 1.5rem;
+          color: #a8dadc;
+          margin: 0 10px;
+      }
+      
+      .footer-custom .social-icons a:hover {
+          color: #457b9d; /* Medium muted blue */
+      }
+      
+      /* Alerts */
+      .alert {
+          font-size: 14px;
+          margin-top: 20px;
+          background-color: #e9ecef;
+          border-left: 4px solid #1d3557;
+          color: #2c3e50;
+      }
+      
+      .alert-dismissible .btn-close {
+          opacity: 1 !important;
+      }
+      
+      /* Dropdown Styles */
+      .navbar-nav .dropdown-menu {
+          background-color: #f4f6f8;
+          border: none;
+      }
+      
+      .navbar-nav .dropdown-menu .dropdown-item {
+          color: #2c3e50;
+          font-size: 14px;
+      }
+      
+      .navbar-nav .dropdown-menu .dropdown-item:hover {
+          background-color: #457b9d;
+          color: #ffffff;
+      }
+      
+      .navbar-nav .dropdown-menu .dropdown-divider {
+          border-top: 1px solid #457b9d;
+      }
+      
+      /* Button Customization */
+      .btn-primary {
+          background-color: #457b9d;
+          border-color: #457b9d;
+          transition: background-color 0.3s, border-color 0.3s;
+      }
+      
+      .btn-primary:hover {
+          background-color: #1d3557;
+          border-color: #1d3557;
+      }
+      
+      /* Content Animations */
+      .fade-in {
+          animation: fadeIn 0.5s ease-in-out;
+      }
+      
+      @keyframes fadeIn {
+          0% { opacity: 0; }
+          100% { opacity: 1; }
+      }
+      
+      /* Masonry Grid */
+      .grid {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 20px;
+      }
+      
+      .grid-item {
+          flex: 1 1 30%;
+          background: #ffffff;
+          padding: 20px;
+          box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+          border-radius: 8px;
+          transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+      }
+      
+      .grid-item:hover {
+          transform: translateY(-5px);
+          box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+      }
+      
+      .grid-sizer {
+          width: 33.333%;
+      }
+      
+      /* Tooltip Customization */
+      .tooltip-inner {
+          background-color: #457b9d;
+          color: #ffffff;
+          border-radius: 8px;
+      }
+      
+      .tooltip-arrow {
+          border-top-color: #457b9d !important;
+      }
+      
+      /* Small Screens (Mobile-first) */
+      @media (max-width: 768px) {
+          .navbar-custom .navbar-nav {
+              text-align: center;
+          }
+      
+          .grid-item {
+              flex: 1 1 100%;
+          }
+      
+          .footer-custom {
+              padding: 15px 0;
+          }
+      }
+
+      
+
+     
+/* New Styles for Image Gradient Overlay */
+.image-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+.image-wrapper img {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+.image-wrapper::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.6), transparent);
+    pointer-events: none;
+    z-index: 1;
+}
+ 

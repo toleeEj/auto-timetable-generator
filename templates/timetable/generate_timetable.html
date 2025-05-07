@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block title %}Generate Timetable{% endblock %}
+
+{% block content %}
+    <div class="container mt-5">
+        <h2>Generate Timetable</h2>
+        <form method="post" class="mt-4">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-primary btn-lg">Generate</button>
+        </form>
+    </div>
+{% endblock %}

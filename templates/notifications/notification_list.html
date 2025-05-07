@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %}Notifications{% endblock %}
+
+{% block content %}
+    <div class="container mt-5">
+        <h2>Your Notifications</h2>
+        
+        <div class="list-group mt-4">
+            {% for notification in notifications %}
+                <a href="#" class="list-group-item list-group-item-action">
+                    <div class="d-flex w-100 justify-content-between">
+                        <h5 class="mb-1">{{ notification.message }}</h5>
+                        <small>{{ notification.created_at|date:"Y-m-d H:i" }}</small>
+                    </div>
+                </a>
+            {% empty %}
+                <p class="text-center">No notifications.</p>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

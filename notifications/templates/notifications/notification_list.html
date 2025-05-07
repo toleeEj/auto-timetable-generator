@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %}Notifications{% endblock %}
+
+{% block content %}
+<h2>Your Notifications</h2>
+{% if notifications %}
+    <ul>
+        {% for notification in notifications %}
+            <li>
+                {{ notification.message }} 
+                {% if notification.related_class %}
+                    (Class: {{ notification.related_class.course.code }} {{ notification.related_class.section }} 
+                    on {{ notification.related_class.time_slot }} in {{ notification.related_class.room }})
+                {% endif %}
+                <br>
+                <small>Received: {{ notification.created_at }}</small>
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>No notifications available.</p>
+{% endif %}
+<a href="{% url 'home' %}">Back to Home</a>
+{% endblock %}

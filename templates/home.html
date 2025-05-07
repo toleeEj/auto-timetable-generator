@@ -1,0 +1,267 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Home{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/home.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <!-- Hero Section -->
+    <div class="row align-items-center mb-5 animate__animated animate__fadeIn">
+        <div class="col-lg-6">
+            <h1 class="display-4 fw-bold mb-4">Welcome to the <span class="text-primary">Timetable System</span></h1>
+            <p class="lead text-muted mb-4">
+                Streamline your academic scheduling with our intuitive platform designed for students, faculty, and administrators.
+            </p>
+            {% if not user.is_authenticated %}
+            <div class="d-flex gap-3">
+                <a href="{% url 'login' %}" class="btn btn-primary btn-lg px-4">
+                    <i class="fas fa-sign-in-alt me-2"></i>Login
+                </a>
+                <a href="{% url 'register' %}" class="btn btn-outline-primary btn-lg px-4">
+                    <i class="fas fa-user-plus me-2"></i>Register
+                </a>
+            </div>
+            {% endif %}
+        </div>
+
+        {% if user.role == 'admin' %}
+            <div class="col-lg-6 d-none d-lg-block">
+                <img src="{% static 'images/adminImage.png' %}" alt="Timetable Illustration" class="img-fluid">
+            </div>
+        {% elif user.role == 'faculty' %}
+            <div class="col-lg-6 d-none d-lg-block">
+                <img src="{% static 'images/teacher.jpg' %}" alt="Timetable Illustration" class="img-fluid">
+            </div>
+        {% elif user.role == 'student' %}
+            <div class="col-lg-6 d-none d-lg-block">
+                <img src="{% static 'images/student.jpg' %}" alt="Timetable Illustration" class="img-fluid">
+            </div>
+        {% elif not user.is_authenticated %}
+            <div class="col-lg-6 d-none d-lg-block image-wrapper">
+                <img src="{% static 'images/digital-university.webp' %}" alt="Timetable Illustration" class="img-fluid">
+            </div>
+        
+        {% endif %}
+
+    </div>
+
+    {% if user.is_authenticated %}
+    <!-- User Welcome Card -->
+    <div class="row justify-content-center mb-5">
+        <div class="col-md-8">
+            <div class="card card-custom border-0 bg-gradient-primary text-white animate__animated animate__fadeInUp">
+                <div class="card-body p-4">
+                    <div class="d-flex align-items-center">
+                        <div class="flex-shrink-0">
+                            <div class="avatar avatar-xl bg-white text-primary rounded-circle d-flex align-items-center justify-content-center shadow">
+                                <i class="fas fa-user fa-2x"></i>
+                            </div>
+                        </div>
+                        <div class="flex-grow-1 ms-4 p-4 bg-white rounded shadow-lg">
+                            <h3 class="card-title mb-2 text-dark fw-bold">Hello, {{ user.get_full_name|default:user.username }}!</h3>
+                            <p class="card-text mb-0 text-muted">
+                                You're logged in as <span class="badge bg-primary text-white">{{ user.role|title }}</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Actions Section -->
+    <div class="row g-4 mb-5 animate__animated animate__fadeIn">
+        {% if user.role == 'student' %}
+            <!-- Student Quick Actions -->
+            <div class="col-md-6 col-lg-4">
+                <div class="card card-custom h-100 hover-shadow-lg">
+                    <div class="card-body text-center p-4">
+                        <div class="icon icon-lg icon-shape bg-gradient-info text-white rounded-circle mb-4">
+                            <i class="fas fa-table"></i>
+                        </div>
+                        <h4 class="mb-3">My Timetable</h4>
+                        <p class="text-muted">View your personalized class schedule and room assignments.</p>
+                        <a href="{% url 'student_timetable' %}" class="btn btn-sm btn-outline-primary">View Timetable</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+                <div class="card card-custom h-100 hover-shadow-lg">
+                    <div class="card-body text-center p-4">
+                        <div class="icon icon-lg icon-shape bg-gradient-warning text-white rounded-circle mb-4">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                        <h4 class="mb-3">Report Conflict</h4>
+                        <p class="text-muted">Notify administrators about scheduling issues or conflicts.</p>
+                        <a href="{% url 'report_conflict' %}" class="btn btn-sm btn-outline-primary">Report Now</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+                <div class="card card-custom h-100 hover-shadow-lg">
+                    <div class="card-body text-center p-4">
+                        <div class="icon icon-lg icon-shape bg-gradient-success text-white rounded-circle mb-4">
+                            <i class="fas fa-calendar-export"></i>
+                        </div>
+                        <h4 class="mb-3">Export Timetable</h4>
+                        <p class="text-muted">Download your schedule in various formats for easy access.</p>
+                        <a href="{% url 'export_timetable' %}" class="btn btn-sm btn-outline-primary">Export Options</a>
+                    </div>
+                </div>
+            </div>
+        {% elif user.role == 'faculty' %}
+            <!-- Faculty Quick Actions -->
+            <div class="col-md-6 col-lg-4">
+                <div class="card card-custom h-100 hover-shadow-lg">
+                    <div class="card-body text-center p-4">
+                        <div class="icon icon-lg icon-shape bg-gradient-info text-white rounded-circle mb-4">
+                            <i class="fas fa-chalkboard-teacher"></i>
+                        </div>
+                        <h4 class="mb-3">Faculty Schedule</h4>
+                        <p class="text-muted">View your teaching schedule and room assignments.</p>
+                        <a href="{% url 'faculty_timetable' %}" class="btn btn-sm btn-outline-primary">View Schedule</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+                <div class="card card-custom h-100 hover-shadow-lg">
+                    <div class="card-body text-center p-4">
+                        <div class="icon icon-lg icon-shape bg-gradient-warning text-white rounded-circle mb-4">
+                            <i class="fas fa-flag"></i>
+                        </div>
+                        <h4 class="mb-3">Report Issues</h4>
+                        <p class="text-muted">Report scheduling conflicts or room availability problems.</p>
+                        <a href="{% url 'report_conflict' %}" class="btn btn-sm btn-outline-primary">Report Issue</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+                <div class="card card-custom h-100 hover-shadow-lg">
+                    <div class="card-body text-center p-4">
+                        <div class="icon icon-lg icon-shape bg-gradient-success text-white rounded-circle mb-4">
+                            <i class="fas fa-file-export"></i>
+                        </div>
+                        <h4 class="mb-3">Export Schedule</h4>
+                        <p class="text-muted">Download your teaching schedule for offline access.</p>
+                        <a href="{% url 'export_timetable' %}" class="btn btn-sm btn-outline-primary">Export Now</a>
+                    </div>
+                </div>
+            </div>
+        {% elif user.role == 'admin' %}
+            <!-- Admin Quick Actions -->
+            <div class="col-md-6 col-lg-4">
+                <div class="card card-custom h-100 hover-shadow-lg">
+                    <div class="card-body text-center p-4">
+                        <div class="icon icon-lg icon-shape bg-gradient-danger text-white rounded-circle mb-4">
+                            <i class="fas fa-tachometer-alt"></i>
+                        </div>
+                        <h4 class="mb-3">Admin Dashboard</h4>
+                        <p class="text-muted">Access all administrative tools and system overview.</p>
+                        <a href="{% url 'admin_dashboard' %}" class="btn btn-sm btn-outline-primary">Go to Dashboard</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+                <div class="card card-custom h-100 hover-shadow-lg">
+                    <div class="card-body text-center p-4">
+                        <div class="icon icon-lg icon-shape bg-gradient-info text-white rounded-circle mb-4">
+                            <i class="fas fa-calendar-plus"></i>
+                        </div>
+                        <h4 class="mb-3">Generate Timetable</h4>
+                        <p class="text-muted">Create optimized schedules for the entire institution.</p>
+                        <a href="{% url 'generate_timetable' %}" class="btn btn-sm btn-outline-primary">Generate Now</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+                <div class="card card-custom h-100 hover-shadow-lg">
+                    <div class="card-body text-center p-4">
+                        <div class="icon icon-lg icon-shape bg-gradient-warning text-white rounded-circle mb-4">
+                            <i class="fas fa-flag"></i>
+                        </div>
+                        <h4 class="mb-3">Conflict Reports</h4>
+                        <p class="text-muted">Review and resolve reported scheduling conflicts.</p>
+                        <a href="{% url 'conflict_list' %}" class="btn btn-sm btn-outline-primary">View Reports</a>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- Recent Activity Section -->
+    {% if not user.role == 'admin' %}
+    <div class="row animate__animated animate__fadeIn">
+        <div class="col-12">
+            <div class="card card-custom">
+                <div class="card-header bg-white border-bottom-0 py-3">
+                    <h4 class="mb-0"><i class="fas fa-bell me-2 text-primary"></i> Recent Activity</h4>
+                </div>
+                <div class="card-body text-center">
+                    <a class="btn btn-primary" href="{% url 'notification_list' %}">
+                        <i class="fas fa-bell me-1"></i> View Notifications
+                        {% if unread_notifications %}
+                        <span class="badge bg-danger rounded-pill">{{ unread_notifications }}</span>
+                        {% endif %}
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+
+    {% endif %}
+
+    <!-- Features Section -->
+    <div class="row mt-5 animate__animated animate__fadeIn">
+        <div class="col-12 text-center mb-4">
+            <h2 class="fw-bold">System Features</h2>
+            <p class="lead text-muted">Discover what our timetable system can do for you</p>
+        </div>
+
+        <div class="col-md-4 mb-4">
+            <div class="card card-custom h-100 border-0 hover-shadow-sm">
+                <div class="card-body p-4 text-center">
+                    <div class="icon icon-lg icon-shape bg-gradient-primary text-white rounded-circle mb-4 mx-auto">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <h4 class="mb-3">Responsive Design</h4>
+                    <p class="text-muted">Access your timetable from any device, anywhere, anytime.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-4">
+            <div class="card card-custom h-100 border-0 hover-shadow-sm">
+                <div class="card-body p-4 text-center">
+                    <div class="icon icon-lg icon-shape bg-gradient-success text-white rounded-circle mb-4 mx-auto">
+                        <i class="fas fa-sync-alt"></i>
+                    </div>
+                    <h4 class="mb-3">Real-time Updates</h4>
+                    <p class="text-muted">Get instant notifications about schedule changes and updates.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-4">
+            <div class="card card-custom h-100 border-0 hover-shadow-sm">
+                <div class="card-body p-4 text-center">
+                    <div class="icon icon-lg icon-shape bg-gradient-info text-white rounded-circle mb-4 mx-auto">
+                        <i class="fas fa-download"></i>
+                    </div>
+                    <h4 class="mb-3">Multiple Export Options</h4>
+                    <p class="text-muted">Download your schedule in PDF, iCal, or Excel formats.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/home.js' %}"></script>
+{% endblock %}

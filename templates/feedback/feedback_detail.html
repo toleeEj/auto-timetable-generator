@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block title %}Feedback Details{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-lg border-0">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">Feedback Details</h4>
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title mb-3">Feedback from <span class="text-primary">{{ feedback.user.username }}</span></h5>
+                    <p class="mb-2"><strong>Message:</strong> {{ feedback.message }}</p>
+                    <p class="mb-2"><strong>Submitted on:</strong> {{ feedback.created_at|date:"Y-m-d H:i" }}</p>
+                    <p class="mb-2"><strong>Related Class:</strong> {{ feedback.related_class|default:"None" }}</p>
+                    <p class="mb-4"><strong>Status:</strong> 
+                        {% if feedback.is_resolved %}
+                            <span class="badge bg-success">Resolved</span>
+                        {% else %}
+                            <span class="badge bg-warning text-dark">Pending</span>
+                        {% endif %}
+                    </p>
+                    <a href="{% url 'feedback_list' %}" class="btn btn-outline-primary">Back to List</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

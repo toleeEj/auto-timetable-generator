@@ -1,0 +1,301 @@
+{% extends 'base.html' %}
+
+{% block title %}User Profile Management | {{ site_name }}{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-xl-8 col-lg-10">
+            <!-- Profile Card -->
+            <div class="card border-0 shadow-sm rounded-3 overflow-hidden animate__animated animate__fadeIn">
+                <!-- Card Header -->
+                <div class="card-header bg-primary text-white py-4">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <h1 class="h4 mb-0 fw-normal">
+                            <i class="fas fa-user-cog me-2"></i>Account Management
+                        </h1>
+                        <span class="badge bg-white text-primary">PROFILE</span>
+                    </div>
+                </div>
+                
+                <!-- Card Body -->
+                <div class="card-body p-4 p-md-5">
+                    <!-- Status Messages -->
+                    {% if messages %}
+                    <div class="mb-4">
+                        {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }} alert-dismissible fade show rounded-2" role="alert">
+                            <strong>{{ message.tags|title }}:</strong> {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+
+                    <!-- Profile Section -->
+                    <section class="mb-5">
+                        <div class="d-flex flex-column align-items-center mb-4">
+                            <div class="position-relative mb-3">
+                                {% if user.profile_picture %}
+                                <img src="{{ user.profile_picture.url }}" 
+                                     alt="{{ user.get_full_name }}" 
+                                     class="rounded-circle border border-3 border-white shadow"
+                                     style="width: 120px; height: 120px; object-fit: cover;">
+                                {% else %}
+                                <div class="bg-light rounded-circle d-flex align-items-center justify-content-center"
+                                     style="width: 120px; height: 120px;">
+                                    <i class="fas fa-user text-secondary fa-3x"></i>
+                                </div>
+                                {% endif %}
+                                
+                            </div>
+                            <h2 class="h5 mb-1">{{ user.get_full_name|default:user.username }}</h2>
+                            <small class="text-muted">{{ user.email }}</small>
+                        </div>
+
+                        <h3 class="h5 mb-4 text-uppercase text-primary fw-bold">
+                            <i class="fas fa-user-edit me-2"></i>Personal Information
+                        </h3>
+                        
+                        <form method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
+                            {% csrf_token %}
+                            <input type="hidden" name="update_profile" value="true">
+                            
+                            <div class="row g-3">
+                                {% for field in form %}
+                                <div class="col-md-6 mb-3">
+                                    <label for="{{ field.id_for_label }}" class="form-label small text-muted mb-1">
+                                        {{ field.label }}
+                                    </label>
+                                    {{ field }}
+                                    {% if field.errors %}
+                                    <div class="invalid-feedback d-block">
+                                        {{ field.errors|striptags }}
+                                    </div>
+                                    {% endif %}
+                                </div>
+                                {% endfor %}
+                            </div>
+                            
+                            <div class="d-flex justify-content-end mt-4">
+                                <button type="submit" class="btn btn-primary px-4 py-2">
+                                    <i class="fas fa-save me-2"></i>Update Profile
+                                </button>
+                            </div>
+                        </form>
+                    </section>
+
+                    <!-- Security Section -->
+                    <section class="mb-5 pt-4 border-top">
+                        <h3 class="h5 mb-4 text-uppercase text-primary fw-bold">
+                            <i class="fas fa-shield-alt me-2"></i>Security Settings
+                        </h3>
+                        
+                        <form method="post" class="needs-validation" novalidate>
+                            {% csrf_token %}
+                            <input type="hidden" name="change_password" value="true">
+                            
+                            <div class="row g-3">
+                                {% for field in password_form %}
+                                <div class="col-12 mb-3">
+                                    <label for="{{ field.id_for_label }}" class="form-label small text-muted mb-1">
+                                        {{ field.label }}
+                                    </label>
+                                    <div class="input-group">
+                                        {{ field }}
+                                        <button class="btn btn-outline-secondary toggle-password" type="button">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                    </div>
+                                    {% if field.errors %}
+                                    <div class="invalid-feedback d-block">
+                                        {{ field.errors|striptags }}
+                                    </div>
+                                    {% endif %}
+                                </div>
+                                {% endfor %}
+                            </div>
+                            
+                            <div class="d-flex justify-content-end mt-4">
+                                <button type="submit" class="btn btn-warning px-4 py-2 text-white">
+                                    <i class="fas fa-key me-2"></i>Change Password
+                                </button>
+                            </div>
+                        </form>
+                    </section>
+
+                    <!-- Account Actions -->
+                    <section class="pt-4 border-top">
+                        <h3 class="h5 mb-4 text-uppercase text-danger fw-bold">
+                            <i class="fas fa-exclamation-triangle me-2"></i>Account Actions
+                        </h3>
+                        
+                        <div class="alert alert-danger rounded-2">
+                            <div class="d-flex align-items-center">
+                                <div class="flex-shrink-0">
+                                    <i class="fas fa-info-circle fa-lg"></i>
+                                </div>
+                                <div class="flex-grow-1 ms-3">
+                                    <h4 class="h6 mb-2">Permanent Account Deletion</h4>
+                                    <p class="small mb-0">This action will permanently remove all your data from our systems. This cannot be undone.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <form method="post" id="deleteAccountForm" class="mt-3">
+                            {% csrf_token %}
+                            <input type="hidden" name="delete_account" value="true">
+                            
+                            <div class="d-flex justify-content-end">
+                                <button type="button" 
+                                        class="btn btn-outline-danger px-4 py-2"
+                                        data-bs-toggle="modal" 
+                                        data-bs-target="#confirmDeleteModal">
+                                    <i class="fas fa-trash-alt me-2"></i>Delete Account
+                                </button>
+                            </div>
+                            
+                            <!-- Confirmation Modal -->
+                            <div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered">
+                                    <div class="modal-content">
+                                        <div class="modal-header border-0">
+                                            <h5 class="modal-title text-danger">
+                                                <i class="fas fa-exclamation-circle me-2"></i>Confirm Deletion
+                                            </h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body py-4">
+                                            <p>Are you absolutely sure you want to delete your account?</p>
+                                            <p class="small text-muted">All your data will be permanently removed from our systems and cannot be recovered.</p>
+                                        </div>
+                                        <div class="modal-footer border-0">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                            <button type="submit" class="btn btn-danger">Yes, Delete My Account</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Enhanced Form Controls */
+    .form-control, .form-select {
+        border-radius: 0.375rem;
+        padding: 0.5rem 0.75rem;
+        border: 1px solid #dee2e6;
+        transition: all 0.2s ease;
+    }
+    
+    .form-control:focus, .form-select:focus {
+        border-color: #86b7fe;
+        box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+    }
+    
+    /* Button Enhancements */
+    .btn {
+        font-weight: 500;
+        letter-spacing: 0.5px;
+        transition: all 0.2s ease;
+    }
+    
+    /* Card Enhancements */
+    .card {
+        box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.08);
+        border: none;
+    }
+    
+    /* Alert Enhancements */
+    .alert {
+        border-radius: 0.375rem;
+    }
+    
+    /* Profile Picture Enhancements */
+    .profile-picture-container {
+        width: 120px;
+        height: 120px;
+    }
+    
+    /* Toggle Password Button */
+    .toggle-password {
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+    }
+    
+    /* Section Headers */
+    .section-header {
+        position: relative;
+        padding-bottom: 0.5rem;
+    }
+    
+    .section-header:after {
+        content: '';
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 40px;
+        height: 3px;
+        background: linear-gradient(90deg, #0d6efd, #6ea8fe);
+    }
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Enable Bootstrap tooltips
+    document.addEventListener('DOMContentLoaded', function() {
+        // Initialize tooltips
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl);
+        });
+        
+        // Toggle password visibility
+        document.querySelectorAll('.toggle-password').forEach(function(button) {
+            button.addEventListener('click', function() {
+                const input = this.parentNode.querySelector('input');
+                const icon = this.querySelector('i');
+                
+                if (input.type === 'password') {
+                    input.type = 'text';
+                    icon.classList.remove('fa-eye');
+                    icon.classList.add('fa-eye-slash');
+                } else {
+                    input.type = 'password';
+                    icon.classList.remove('fa-eye-slash');
+                    icon.classList.add('fa-eye');
+                }
+            });
+        });
+        
+        // Form validation
+        (function () {
+            'use strict'
+            
+            // Fetch all the forms we want to apply custom Bootstrap validation styles to
+            var forms = document.querySelectorAll('.needs-validation')
+            
+            // Loop over them and prevent submission
+            Array.prototype.slice.call(forms)
+                .forEach(function (form) {
+                    form.addEventListener('submit', function (event) {
+                        if (!form.checkValidity()) {
+                            event.preventDefault()
+                            event.stopPropagation()
+                        }
+                        
+                        form.classList.add('was-validated')
+                    }, false)
+                })
+        })()
+    });
+</script>
+{% endblock %}

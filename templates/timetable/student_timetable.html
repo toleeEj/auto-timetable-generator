@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block title %}Student Timetable{% endblock %}
+
+{% block content %}
+    <div class="container mt-5">
+        <h2>Your Timetable</h2>
+        
+        <table class="table table-bordered mt-4">
+            <thead class="table-light">
+                <tr>
+                    <th>Course</th>
+                    <th>Section</th>
+                    <th>Day</th>
+                    <th>Time</th>
+                    <th>Room</th>
+                    <th>Faculty</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for class in classes %}
+                <tr>
+                    <td>{{ class.course.code }}</td>
+                    <td>{{ class.section|default:"N/A" }}</td>
+                    <td>{{ class.time_slot.day }}</td>
+                    <td>{{ class.time_slot.start_time|time:"H:i" }} - {{ class.time_slot.end_time|time:"H:i" }}</td>
+                    <td>{{ class.room.name }}</td>
+                    <td>{{ class.faculty.username }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="6" class="text-center">No classes scheduled.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+{% block title %}Welcome to Timetable System{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row align-items-center mb-5 animate__animated animate__fadeIn">
+        <div class="col-lg-6">
+            <h1 class="display-4 fw-bold mb-4">Welcome to the <span class="text-primary">Timetable System</span></h1>
+            <p class="lead text-muted mb-4">Manage your academic schedules with ease!</p>
+            {% if not user.is_authenticated %}
+            <div class="d-flex gap-3">
+                <a href="{% url 'login' %}" class="btn btn-primary btn-lg px-4">
+                    <i class="fas fa-sign-in-alt me-2"></i>Login
+                </a>
+                <a href="{% url 'register' %}" class="btn btn-outline-primary btn-lg px-4">
+                    <i class="fas fa-user-plus me-2"></i>Register
+                </a>
+            </div>
+            {% endif %}
+        </div>
+        {% load static %}
+        <div class="col-lg-6 d-none d-lg-block">
+            <img src="{% static 'images/digital-university.webp' %}" alt="Timetable Illustration" class="img-fluid">
+        </div>       
+    </div>
+
+    <!-- Features Section -->
+    <div class="row animate__animated animate__fadeIn">
+        <div class="col-12 text-center mb-4">
+            <h2 class="fw-bold">Key Features</h2>
+            <p class="lead text-muted">Powerful tools for efficient scheduling</p>
+        </div>
+
+        <div class="col-md-3 mb-4">
+            <div class="card card-custom h-100 border-0 hover-shadow-sm text-center p-4">
+                <div class="icon icon-lg icon-shape bg-gradient-warning text-white rounded-circle mb-3 mx-auto">
+                    <i class="fas fa-cogs"></i>
+                </div>
+                <h5 class="fw-semibold">Auto Schedule</h5>
+                <p class="text-muted">Smart timetable generation with built-in conflict detection.</p>
+            </div>
+        </div>
+        <div class="col-md-3 mb-4">
+            <div class="card card-custom h-100 border-0 hover-shadow-sm text-center p-4">
+                <div class="icon icon-lg icon-shape bg-gradient-info text-white rounded-circle mb-3 mx-auto">
+                    <i class="fas fa-bell"></i>
+                </div>
+                <h5 class="fw-semibold">Notifications</h5>
+                <p class="text-muted">Get notified in real-time about updates or changes.</p>
+            </div>
+        </div>
+        <div class="col-md-3 mb-4">
+            <div class="card card-custom h-100 border-0 hover-shadow-sm text-center p-4">
+                <div class="icon icon-lg icon-shape bg-gradient-success text-white rounded-circle mb-3 mx-auto">
+                    <i class="fas fa-file-download"></i>
+                </div>
+                <h5 class="fw-semibold">Export Options</h5>
+                <p class="text-muted">Download your schedule in PDF, iCal, or Excel format.</p>
+            </div>
+        </div>
+        <div class="col-md-3 mb-4">
+            <div class="card card-custom h-100 border-0 hover-shadow-sm text-center p-4">
+                <div class="icon icon-lg icon-shape bg-gradient-primary text-white rounded-circle mb-3 mx-auto">
+                    <i class="fas fa-comments"></i>
+                </div>
+                <h5 class="fw-semibold">Feedback</h5>
+                <p class="text-muted">Share your thoughts and help improve the system.</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .hover-shadow-sm:hover {
+        box-shadow: 0 .5rem 1rem rgba(0, 0, 0, 0.1) !important;
+    }
+
+    .card-custom {
+        border-radius: 1rem;
+        box-shadow: 0 .25rem .75rem rgba(0, 0, 0, 0.05);
+    }
+
+    .icon-shape {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 3.5rem;
+        height: 3.5rem;
+    }
+
+    .avatar {
+        width: 80px;
+        height: 80px;
+    }
+</style>
+{% endblock %}

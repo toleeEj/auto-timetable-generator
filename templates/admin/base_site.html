@@ -1,0 +1,67 @@
+{% extends 'basee.html' %}
+
+{% block title %}
+  {% if subtitle %}{{ subtitle }} | {% endif %}{{ title }} | {{ site_title|default:_('Django site admin') }}
+{% endblock %}
+
+{% block branding %}
+<style>
+  .nav-link.dropdown-toggle {
+    color: #fff;
+    background: linear-gradient(135deg, #4b6cb7, #182848);
+    border-radius: 12px;
+    padding: 10px 15px;
+    transition: all 0.3s ease-in-out;
+  }
+
+  .nav-link.dropdown-toggle:hover {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  }
+
+  .dropdown-menu {
+    background-color: #333; /* Dark background for the dropdown */
+    border-radius: 15px;
+    border: none;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+    animation-duration: 0.4s;
+  }
+
+  .dropdown-item {
+    font-weight: 500;
+    color: #fff; /* White text for contrast */
+    transition: all 0.3s;
+    padding: 10px 20px;
+  }
+
+  .dropdown-item i {
+    color: #4b6cb7;
+  }
+
+  .dropdown-item:hover {
+    background-color: #667eea; /* Subtle hover color */
+    color: #fff;
+  }
+
+  .dropdown-divider {
+    border-top: 1px solid #444; /* Slightly darker divider */
+  }
+</style>
+
+<ul class="nav-item dropdown">
+  <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+    <i class="fas fa-user-shield me-1"></i> Admin
+  </a>
+  <ul class="dropdown-menu animate__animated animate__fadeIn">
+    <li><a class="dropdown-item" href="{% url 'admin_dashboard' %}"><i class="fas fa-tachometer-alt me-2"></i>Dashboard</a></li>
+    <li><a class="dropdown-item" href="{% url 'admin_timetable' %}"><i class="fas fa-calendar-week me-2"></i>All Timetables</a></li>
+    <li><a class="dropdown-item" href="{% url 'generate_timetable' %}"><i class="fas fa-magic me-2"></i>Generate Timetable</a></li>
+    <li><hr class="dropdown-divider"></li>
+    <li><a class="dropdown-item" href="{% url 'conflict_list' %}"><i class="fas fa-flag me-2"></i>Conflict Reports</a></li>
+    <li><a class="dropdown-item" href="{% url 'feedback_list' %}"><i class="fas fa-comments me-2"></i>Feedback</a></li>
+    <li><a class="dropdown-item" href="{% url 'export_timetable' %}"><i class="fas fa-file-export me-2"></i>Export Timetable</a></li>
+  </ul>
+</ul>
+{% endblock %}
+
+{% block nav-global %}{% endblock %}
